@@ -1,7 +1,16 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="estilos.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mem</title>
+
     <script type="text/javascript" src="jquery-2.1.1.js"></script>
+    <link href="bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="estilos.css" rel="stylesheet" type="text/css">
+
     <script type="text/javascript">
       function shuffle(array) {
         var currentIndex = array.length, temporaryValue, randomIndex ;
@@ -23,17 +32,24 @@
       }
 
       $(document).ready(function(){
-        var pairs = 2;
+        var lx = 6;
+        var ly = 4;
+        var pairs = (lx*ly)/2;
         var tile = new Array(pairs * 2);
 
-        for ( var i = 0; i < pairs*2; i++ ) {
+        for ( var i = 0; i < lx*ly; i++ ) {
           tile[i] = Math.floor(i/2);
         }
 
-        tile = shuffle(tile);
+        //tile = shuffle(tile);
 
-        for ( var i = 0; i < pairs*2; i++ ) {
-          $('#board').append("<div id='tile-" + tile[i] + "' class='tile'> <div class='number'>" + tile[i] + "</div></div>");
+        var id = 0;
+        for ( var j = 0; j < ly; j++ ) {
+          for ( var i = 0; i < lx; i++ ) {
+            $('#board').append("<div id='tile-" + id + "' class='tile'> <div class='number'>" + tile[id] + "</div></div>");
+            id++;
+          }
+          $('#board').append("<div class='tile_break'></div>");
         }
 
         $('.tile').click(function() {
@@ -42,17 +58,24 @@
           var two = $('.tile').find(":visible")
           if ( two.length == 2 ) {
             if ( $(two[0]).html() == $(two[1]).html()) {
-              $(two[0]).parent().slideUp(300);
-              $(two[1]).parent().slideUp(400, function() { if ( $('.tile:visible').length == 0 ) {
-                alert("game over");
-                }
-              }
-              );
+              $(two[0]).slideUp(500);
+              $(two[1]).slideUp(510, function() {
+                $(two).parent().css('visibility', 'hidden');
+
+                var ok = 0;
+                $(".tile").each(function() {
+                  if($(this).css("visibility")!="hidden"){
+                    ok = 1;
+                  }
+                });
+                if (ok == 0) alert("game over");
+
+              });
             }
             else
             {
-              $(two[0]).hide(2000);
-              $(two[1]).hide(2000);
+              $(two[0]).hide(500);
+              $(two[1]).hide(500);
             }
           }
 
@@ -60,10 +83,13 @@
 
       });
     </script>
-  </head>
 
+  </head>
   <body>
     <div id='board'></div>
+    <script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
   </body>
-
 </html>
+
+
+
