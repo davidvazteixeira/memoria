@@ -14,7 +14,9 @@
     <link href="estilos.css" rel="stylesheet" type="text/css">
 
     <script type="text/javascript">
+      var who = 1;
       $(document).ready(function(){
+        var play = true;
         var lx = 6;
         var ly = 4;
         var pairs = (lx*ly)/2;
@@ -26,48 +28,45 @@
 
         //tile = shuffle(tile);
 
-        /*
-        var id = 0;
-        for ( var j = 0; j < ly; j++ ) {
-          for ( var i = 0; i < lx; i++ ) {
-            $('#board').append("<div id='tile-" + id + "' class='tile'> <div class='number'>" + tile[id] + "</div></div>");
-            id++;
-          }
-          $('#board').append("<div class='tile_break'></div>");
-        }
-        */
-
         for (var i = 0; i < lx*ly; i++ ) {
-          $('#board').append("<div class='tile'><div class='number'>" + tile[i] + "</div></div>");
+          $('#board').append("<div class='tile well'><div class='number'>" + tile[i] + "</div></div>");
         }
 
         $('#board').css('width', ($('.tile').outerWidth(true) * lx) + 'px')
 
         $('.tile').click(function() {
-          $(this).find('.number').toggle();
+          if (play) {
+            play = false;
+            $(this).find('.number').toggle(200, 'swing', function() {
+              var two = $('.tile').find(":visible");
+              if ( two.length == 2 ) {
+                if ( $(two[0]).html() == $(two[1]).html()) {
+                  $(two[0]).slideUp(200);
+                  $(two[1]).slideUp(210, function() {
+                    swapPlayer();
+                    $(two).parent().css('visibility', 'hidden');
+                    var ok = 0;
+                    $(".tile").each(function() {
+                      if($(this).css("visibility")!="hidden"){
+                        ok = 1;
+                      }
+                    });
+                    play = true;
+                    if (ok == 0) alert("game over");
+                  });
+                }
+                else
+                {
+                  $(two[0]).hide(200);
+                  $(two[1]).hide(200);
+                  play = true;
+                }
+              }
+              play = true;
+            });
+            var two = $('.tile').find(":visible");
+            if (two.length == 2) play = false;
 
-          var two = $('.tile').find(":visible")
-          if ( two.length == 2 ) {
-            if ( $(two[0]).html() == $(two[1]).html()) {
-              $(two[0]).slideUp(500);
-              $(two[1]).slideUp(510, function() {
-                $(two).parent().css('visibility', 'hidden');
-
-                var ok = 0;
-                $(".tile").each(function() {
-                  if($(this).css("visibility")!="hidden"){
-                    ok = 1;
-                  }
-                });
-                if (ok == 0) alert("game over");
-
-              });
-            }
-            else
-            {
-              $(two[0]).hide(500);
-              $(two[1]).hide(500);
-            }
           }
 
         })
@@ -77,8 +76,17 @@
 
   </head>
   <body>
-    <div id='board'></div>
+    <h1>
+    <span id="player" class="label label-default">Player 1</span>
+    </h1>
+    <div class id='board'></div>
+
+
     <script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+
+
+
+
   </body>
 </html>
 

@@ -16,3 +16,10 @@ function shuffle(array) {
 
   return array;
 }
+
+function swapPlayer() {
+  x = $('#player')
+  if (who == 1) who = 2; else who = 1;
+  x.html("Player " + who);
+  //return who;
+}
