@@ -7,30 +7,13 @@
 
     <title>Mem</title>
 
+    <script src="tools.js"></script>
+
     <script type="text/javascript" src="jquery-2.1.1.js"></script>
     <link href="bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="estilos.css" rel="stylesheet" type="text/css">
 
     <script type="text/javascript">
-      function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex ;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-      }
-
       $(document).ready(function(){
         var lx = 6;
         var ly = 4;
@@ -43,6 +26,7 @@
 
         //tile = shuffle(tile);
 
+        /*
         var id = 0;
         for ( var j = 0; j < ly; j++ ) {
           for ( var i = 0; i < lx; i++ ) {
@@ -51,6 +35,13 @@
           }
           $('#board').append("<div class='tile_break'></div>");
         }
+        */
+
+        for (var i = 0; i < lx*ly; i++ ) {
+          $('#board').append("<div class='tile'><div class='number'>" + tile[i] + "</div></div>");
+        }
+
+        $('#board').css('width', ($('.tile').outerWidth(true) * lx) + 'px')
 
         $('.tile').click(function() {
           $(this).find('.number').toggle();
